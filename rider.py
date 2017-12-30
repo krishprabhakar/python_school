@@ -1,3 +1,5 @@
+from location import Location
+
 """
 The rider module contains the Rider class. It also contains
 constants that represent the status of the rider.
@@ -43,12 +45,11 @@ class Rider:
         >>> origin = Location(5,2)
         >>> destination = Location(3,2)
         >>> kal = Rider("kal", origin, destination, 5)
-        >>> print(x)
-        unique_identifier: kal , origin: (row: 5 column: 2), destination:
-        (row: 5 column: 2), patience: 5, status: waiting"
+        >>> print(kal)
+        unique_identifier: kal , origin: (5,2), destination: (3,2), patience: 5, status: waiting
         """
         return "unique_identifier: {} , origin: ({}), destination: ({}), " \
-               "patience: {}, status: {} ".format(self.id, self.origin,
+               "patience: {}, status: {}".format(self.id, self.origin,
                                                   self.destination,
                                                   self.patience, self.status)
     def cancel(self):
@@ -61,13 +62,11 @@ class Rider:
         >>> origin = Location(5,2)
         >>> destination = Location(3,2)
         >>> kal = Rider("kal", origin, destination, 5)
-        >>> print(x)
-        unique_identifier: kal , origin: (row: 5 column: 2), destination:
-        (row: 5 column: 2), patience: 5, status: waiting"
-        >>> x.cancel()
-        >>> print(x)
-        unique_identifier: kal , origin: (row: 5 column: 2), destination:
-        (row: 5 column: 2), patience: 5, status: cancelled"
+        >>> print(kal)
+        unique_identifier: kal , origin: (5,2), destination: (3,2), patience: 5, status: waiting
+        >>> kal.cancel()
+        >>> print(kal)
+        unique_identifier: kal , origin: (5,2), destination: (3,2), patience: 5, status: cancelled
         """
         self.status = CANCELLED
 
@@ -81,17 +80,14 @@ class Rider:
         >>> origin = Location(5,2)
         >>> destination = Location(3,2)
         >>> kal = Rider("kal", origin, destination, 5)
-        >>> print(x)
-        unique_identifier: kal , origin: (row: 5 column: 2), destination:
-        (row: 5 column: 2), patience: 5, status: waiting"
-        >>> x.cancel()
-        >>> print(x)
-        unique_identifier: kal , origin: (row: 5 column: 2), destination:
-        (row: 5 column: 2), patience: 5, status: cancelled"
-        >>> x.wait
-        >>> print(x)
-        unique_identifier: kal , origin: (row: 5 column: 2), destination:
-        (row: 5 column: 2), patience: 5, status: waiting"
+        >>> print(kal)
+        unique_identifier: kal , origin: (5,2), destination: (3,2), patience: 5, status: waiting
+        >>> kal.cancel()
+        >>> print(kal)
+        unique_identifier: kal , origin: (5,2), destination: (3,2), patience: 5, status: cancelled
+        >>> kal.wait()
+        >>> print(kal)
+        unique_identifier: kal , origin: (5,2), destination: (3,2), patience: 5, status: waiting
         """
 
         self.status = WAITING
@@ -106,13 +102,11 @@ class Rider:
         >>> origin = Location(5,2)
         >>> destination = Location(3,2)
         >>> kal = Rider("kal", origin, destination, 5)
-        >>> print(x)
-        unique_identifier: kal , origin: (row: 5 column: 2), destination:
-        (row: 5 column: 2), patience: 5, status: waiting"
-        >>> x.cancel()
-        >>> print(x)
-        unique_identifier: kal , origin: (row: 5 column: 2), destination:
-        (row: 5 column: 2), patience: 5, status: satisfied"
+        >>> print(kal)
+        unique_identifier: kal , origin: (5,2), destination: (3,2), patience: 5, status: waiting
+        >>> kal.satisfied()
+        >>> print(kal)
+        unique_identifier: kal , origin: (5,2), destination: (3,2), patience: 5, status: satisfied
         """
 
         self.status = SATISFIED
