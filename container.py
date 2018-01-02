@@ -62,6 +62,46 @@ class PriorityQueue(Container):
         """
         self._items = []
 
+    def __lt__(self, other):
+        """
+        Returns whether self is less than other item
+
+        @param other: PriorityQueue
+        @type other:  PriorityQueue
+        @rtype: bool
+        """
+        raise NotImplementedError("Implemented in a subclass")
+
+    def __le__(self, other):
+        """
+        Returns whether self is less than other item
+
+        @param other: PriorityQueue
+        @type other:  PriorityQueue
+        @rtype: bool
+        """
+        raise NotImplementedError("Implemented in a subclass")
+
+    def __gt__(self, other):
+        """
+        Returns whether self is greater than other item
+
+        @param other: PriorityQueue
+        @type other:  PriorityQueue
+        @rtype: bool
+        """
+        raise NotImplementedError("Implemented in a subclass")
+
+    def __ge__(self, other):
+        """
+        Returns whether self is greater than or equal to the other item
+
+        @param other: PriorityQueue
+        @type other:  PriorityQueue
+        @rtype: bool
+        """
+        raise NotImplementedError("Implemented in a subclass")
+
     def remove(self):
         """Remove and return the next item from this PriorityQueue.
 

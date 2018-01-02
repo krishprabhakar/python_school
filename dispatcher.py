@@ -26,8 +26,8 @@ class Dispatcher:
         """
         # TODO
         self.waiting_list = []
-        self.driver_dict = {}
-        self.rider_list=[]
+        self.driver_list = []
+        self.rider_list = []
 
     def __str__(self):
         """Return a string representation.
@@ -36,7 +36,8 @@ class Dispatcher:
         @rtype: str
         """
         # TODO
-        pass
+        return ("waiting list of riders: {} \n driver registered list {}".
+                format(self.waiting_list, self.driver_list))
 
     def request_driver(self, rider):
         """Return a driver for the rider, or None if no driver is available.
@@ -49,21 +50,20 @@ class Dispatcher:
         """
         # TODO
         # checks the dictionary to see if there is an available driver
-        available_drivers = []
-        for driver in self.driver_dict:
-            if self.driver_dict[driver] is None:
-                available_drivers.append(driver)
-        # checks if drivers are available, if not rider is put on waiting list
-        if len(available_drivers) == 0:
+        driver = None
+
+        for driver_registered in self.driver_list:
+            if driver_registered.has_rider is None:
+                # check for if this is the first person assigned
+                if driver is None:
+                    driver = driver_registered
+                elif driver_registered.get_travel_time(rider.origin) < driver.get_travel_time(rider.origin):
+                    driver = driver_registered
+
+        if driver is None:
             self.waiting_list.append(rider)
         else:
-            first_driver = available_drivers[0]
-            closest_time = first_driver.get_travel_time(rider.origin)
-            assigned_driver = first_driver
-            for driver in available_drivers:
-                if driver.get_travel_time(rider.origin) <= closest_time:
-                    assigned_driver = driver
-        return assigned_driver
+            return driver
 
     def request_rider(self, driver):
         """Return a rider for the driver, or None if no rider is available.
@@ -76,12 +76,20 @@ class Dispatcher:
         """
         # TODO
         # check if the driver is in the driver_dict
-        if driver not in self.driver_dict:
-            self.driver_dict[driver] = None
+        if driver not in self.driver_list:
+            self.driver_list.append(driver)
+
         if len(self.waiting_list) == 0:
             return None
         else:
-            return self.waiting_list[0]
+            # this line will work but just to be safe im adding the loop
+            # return self.waiting_list[0]
+            rider = self.waiting_list[0]
+            for riders in self.waiting_list:
+                if rider.timestamp < riders:
+                    rider = riders
+            return rider
+
 
     def cancel_ride(self, rider):
         """Cancel the ride for rider.

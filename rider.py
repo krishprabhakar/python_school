@@ -20,7 +20,7 @@ SATISFIED = "satisfied"
 
 class Rider:
 
-    def __init__(self, unique_identifier, origin, destination, patience):
+    def __init__(self, unique_identifier, origin, destination, patience, timestamp):
         """
         Initializes a rider
 
@@ -34,6 +34,8 @@ class Rider:
         self.id, self.origin, = unique_identifier, origin
         self.destination, self.patience = destination, patience
         self.status = WAITING
+        self.picked_up = False
+        self.timestamp = timestamp
 
     def __str__(self):
         """

@@ -16,7 +16,7 @@ class Driver:
         A location the driver must drive towards, which may not exist
     """
 
-    def __init__(self, identifier, location, speed):
+    def __init__(self, identifier, origin, speed):
         """Initialize a Driver.
 
         @type self: Driver
@@ -26,10 +26,12 @@ class Driver:
         @rtype: None
         """
         # TODO
-        self.id, self.location, self.speed = identifier, location, speed
+        self.id, self.location, self.speed = identifier, origin, speed
 
         self.destination = None
         self.is_idle = True
+        self.has_rider = False
+
 
 
     def __str__(self):
