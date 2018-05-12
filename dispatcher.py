@@ -1,5 +1,6 @@
 from driver import Driver
 from rider import Rider
+from location import Location
 
 
 class Dispatcher:
@@ -27,7 +28,7 @@ class Dispatcher:
         # TODO
         self.waiting_list = []
         self.driver_list = []
-        self.rider_list = []
+        # self.rider_list = []
 
     def __str__(self):
         """Return a string representation.
@@ -47,13 +48,31 @@ class Dispatcher:
         @type self: Dispatcher
         @type rider: Rider
         @rtype: Driver | None
+
+        >>> dis = Dispatcher()
+        >>> fire = Driver("fire", Location(5,5), 5)
+        >>> inferno = Driver("inferno", Location(5,20), 5)
+        >>> kal = Rider("kal", Location(5,2), Location(3,2), 5, 3)
+        >>> print(kal)
+        unique_identifier: kal , origin: (5,2), destination: (3,2), patience: 5, status: waiting, timestamp: 3
+        >>> print(dis.request_driver(kal))
+        None
+        >>> print(dis.waiting_list[0])
+        unique_identifier: kal , origin: (5,2), destination: (3,2), patience: 5, status: waiting, timestamp: 3
+        >>> dis2 = Dispatcher()
+        >>> print(dis2.request_rider(fire))
+        None
+        >>> dis2.request_rider(inferno)
+        >>> print(dis2.request_driver(kal))
+        identifier:fire, location:(5,5), speed:5 idle status:True destination:(None)
+
         """
         # TODO
         # checks the dictionary to see if there is an available driver
         driver = None
 
         for driver_registered in self.driver_list:
-            if driver_registered.has_rider is None:
+            if not driver_registered.rider and driver_registered.is_idle:
                 # check for if this is the first person assigned
                 if driver is None:
                     driver = driver_registered
@@ -73,11 +92,28 @@ class Dispatcher:
         @type self: Dispatcher
         @type driver: Driver
         @rtype: Rider | None
+
+        >>> dis = Dispatcher()
+        >>> origin = Location(5,2)
+        >>> destination = Location(3,2)
+        >>> origin2 = Location(5,6)
+        >>> fire = Driver("fire", origin2, 5)
+        >>> kal = Rider("kal", origin, destination, 5, 3)
+        >>> dis2 = Dispatcher()
+        >>> dis.request_driver(kal)
+        >>> print(dis2.request_rider(fire))
+        None
+        >>> print(dis2.driver_list[0])
+        identifier:fire, location:(5,6), speed:5 idle status:True destination:(None)
+        >>> print(dis.request_rider(fire))
+        unique_identifier: kal , origin: (5,2), destination: (3,2), patience: 5, status: waiting, timestamp: 3
+
         """
         # TODO
         # check if the driver is in the driver_dict
         if driver not in self.driver_list:
             self.driver_list.append(driver)
+            return self.waiting_list[0]
 
         if len(self.waiting_list) == 0:
             return None
@@ -90,13 +126,26 @@ class Dispatcher:
                     rider = riders
             return rider
 
-
     def cancel_ride(self, rider):
         """Cancel the ride for rider.
 
         @type self: Dispatcher
         @type rider: Rider
         @rtype: None
+
+        >>> dis = Dispatcher()
+        >>> origin = Location(5,2)
+        >>> destination = Location(3,2)
+        >>> kal = Rider("kal", origin, destination, 5, 3)
+        >>> print(kal)
+        unique_identifier: kal , origin: (5,2), destination: (3,2), patience: 5, status: waiting, timestamp: 3
+        >>> dis.request_driver(kal)
+        >>> dis.cancel_ride(kal)
+        >>> print(kal)
+        unique_identifier: kal , origin: (5,2), destination: (3,2), patience: 5, status: cancelled, timestamp: 3
+        >>> print(dis.waiting_list)
+        []
         """
         # TODO
-        rider._cancel()
+        self.waiting_list.remove(rider)
+        rider.cancel()

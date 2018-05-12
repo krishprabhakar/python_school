@@ -30,9 +30,7 @@ class Driver:
 
         self.destination = None
         self.is_idle = True
-        self.has_rider = False
-
-
+        self.rider = False
 
     def __str__(self):
         """Return a string representation of the driver.
@@ -48,8 +46,8 @@ class Driver:
         """
         # TODO
         return 'identifier:{}, location:({}), speed:{} idle status:{} ' \
-               'destination:({})'.format(
-                self.id, self.location, self.speed, self.is_idle, self.destination)
+               'destination:({})'.format(self.id, self.location, self.speed,
+                                         self.is_idle, self.destination)
 
     def __eq__(self, other):
         """Return True if self equals other, and false otherwise.
@@ -144,7 +142,7 @@ class Driver:
         @type rider: Rider
         @rtype: int
 
-        >>> ado = Rider("ado",Location(30,2),Location(30,32),5)
+        >>> ado = Rider("ado",Location(30,2),Location(30,32),5,3)
         >>> kal = Driver("fire", Location(5,2), 5)
         >>> kal.start_drive(ado.origin)
         5
@@ -157,11 +155,11 @@ class Driver:
         identifier:fire, location:(30,2), speed:5 idle status:False destination:(30,32)
         """
         # TODO
-        ride_time = (manhattan_distance(rider.origin, rider.destination)/
+        ride_time = (manhattan_distance(rider.origin, rider.destination) /
                      self.speed)
         self.destination = rider.destination
         self.is_idle = False
-
+        self.rider = rider
         return ride_time
 
     def end_ride(self):
@@ -173,7 +171,7 @@ class Driver:
         @type self: Driver
         @rtype: None
 
-        >>> ado = Rider("ado",Location(30,2),Location(30,32),5)
+        >>> ado = Rider("ado",Location(30,2),Location(30,32),5, 3)
         >>> kal = Driver("fire", Location(5,2), 5)
         >>> kal.start_drive(ado.origin)
         5
@@ -192,7 +190,4 @@ class Driver:
         self.location = self.destination
         self.is_idle = True
         self.destination = None
-
-
-
-
+        self.rider = False

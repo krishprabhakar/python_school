@@ -20,7 +20,8 @@ SATISFIED = "satisfied"
 
 class Rider:
 
-    def __init__(self, unique_identifier, origin, destination, patience, timestamp):
+    def __init__(self, unique_identifier, origin, destination, patience,
+                 timestamp):
         """
         Initializes a rider
 
@@ -46,14 +47,18 @@ class Rider:
 
         >>> origin = Location(5,2)
         >>> destination = Location(3,2)
-        >>> kal = Rider("kal", origin, destination, 5)
+        >>> kal = Rider("kal", origin, destination, 5,3)
         >>> print(kal)
-        unique_identifier: kal , origin: (5,2), destination: (3,2), patience: 5, status: waiting
+        unique_identifier: kal , origin: (5,2), destination: (3,2), patience: 5, status: waiting, timestamp: 3
         """
         return "unique_identifier: {} , origin: ({}), destination: ({}), " \
-               "patience: {}, status: {}".format(self.id, self.origin,
-                                                  self.destination,
-                                                  self.patience, self.status)
+               "patience: {}, status: {}, timestamp: {}".format(self.id,
+                                                                self.origin,
+                                                                self.destination
+                                                                , self.patience,
+                                                                self.status,
+                                                                self.timestamp)
+
     def cancel(self):
         """
         Sets the status of the rider to cancelled
@@ -63,12 +68,12 @@ class Rider:
 
         >>> origin = Location(5,2)
         >>> destination = Location(3,2)
-        >>> kal = Rider("kal", origin, destination, 5)
+        >>> kal = Rider("kal", origin, destination, 5, 3)
         >>> print(kal)
-        unique_identifier: kal , origin: (5,2), destination: (3,2), patience: 5, status: waiting
+        unique_identifier: kal , origin: (5,2), destination: (3,2), patience: 5, status: waiting, timestamp: 3
         >>> kal.cancel()
         >>> print(kal)
-        unique_identifier: kal , origin: (5,2), destination: (3,2), patience: 5, status: cancelled
+        unique_identifier: kal , origin: (5,2), destination: (3,2), patience: 5, status: cancelled, timestamp: 3
         """
         self.status = CANCELLED
 
@@ -81,46 +86,45 @@ class Rider:
 
         >>> origin = Location(5,2)
         >>> destination = Location(3,2)
-        >>> kal = Rider("kal", origin, destination, 5)
+        >>> kal = Rider("kal", origin, destination, 5, 3)
         >>> print(kal)
-        unique_identifier: kal , origin: (5,2), destination: (3,2), patience: 5, status: waiting
+        unique_identifier: kal , origin: (5,2), destination: (3,2), patience: 5, status: waiting, timestamp: 3
         >>> kal.cancel()
         >>> print(kal)
-        unique_identifier: kal , origin: (5,2), destination: (3,2), patience: 5, status: cancelled
+        unique_identifier: kal , origin: (5,2), destination: (3,2), patience: 5, status: cancelled, timestamp: 3
         >>> kal.wait()
         >>> print(kal)
-        unique_identifier: kal , origin: (5,2), destination: (3,2), patience: 5, status: waiting
+        unique_identifier: kal , origin: (5,2), destination: (3,2), patience: 5, status: waiting, timestamp: 3
         """
 
         self.status = WAITING
 
     def satisfied(self):
         """
-        Sets the status of the rider to cancelled
+        Sets the status of the rider to satisfied
 
         @type self : Rider
         @return: None
 
         >>> origin = Location(5,2)
         >>> destination = Location(3,2)
-        >>> kal = Rider("kal", origin, destination, 5)
+        >>> kal = Rider("kal", origin, destination, 5, 3)
         >>> print(kal)
-        unique_identifier: kal , origin: (5,2), destination: (3,2), patience: 5, status: waiting
+        unique_identifier: kal , origin: (5,2), destination: (3,2), patience: 5, status: waiting, timestamp: 3
         >>> kal.satisfied()
         >>> print(kal)
-        unique_identifier: kal , origin: (5,2), destination: (3,2), patience: 5, status: satisfied
+        unique_identifier: kal , origin: (5,2), destination: (3,2), patience: 5, status: satisfied, timestamp: 3
         """
 
         self.status = SATISFIED
 
 
 if __name__ == "__main__":
-
     from location import Location
-    origin = Location(5,2)
-    destination = Location(3,2)
-    x = Rider("kal", origin, destination, 5)
+
+    origin = Location(5, 2)
+    destination = Location(3, 2)
+    x = Rider("kal", origin, destination, 5,3)
     print(x)
     x.satisfied()
     print(x)
-

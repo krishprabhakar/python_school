@@ -34,6 +34,8 @@ class Simulation:
 
         @type self: Simulation
         @rtype: None
+
+
         """
         self._events = PriorityQueue()
         self._dispatcher = Dispatcher()
@@ -51,7 +53,7 @@ class Simulation:
         @rtype: dict[str, object]
         """
         # TODO
-        pass
+        #pass
 
         # Add all initial events to the event queue.
         event_queue = PriorityQueue()
@@ -74,5 +76,5 @@ class Simulation:
 if __name__ == "__main__":
     events = create_event_list("events.txt")
     sim = Simulation()
-    final_stats = sim.run(events)
+    #final_stats = sim.run(events)
     print(final_stats)
