@@ -8,6 +8,9 @@ from location import deserialize_location
 from monitor import RIDER, DRIVER, REQUEST, CANCEL, PICKUP, DROPOFF
 from rider import Rider, WAITING, CANCELLED, SATISFIED
 from container import PriorityQueue
+from location import Location
+from dispatcher import Dispatcher
+from monitor import Monitor
 
 
 class Event:
@@ -198,13 +201,16 @@ class RiderRequest(Event):
         @rtype: None
 
         >>> events = PriorityQueue()
-        >>> rider1 = RiderRequest(7, Rider(kal,Location(5,4),Location(2,3),2,5))
-        >>> rider2 = RiderRequest(2, Rider(bal,Location(5,4),Location(2,3),2,5))
-        >>> rider3 = RiderRequest(5, Rider(cal,Location(5,4),Location(2,3),2,5))
+        >>> rider1 = RiderRequest(7, Rider("kal",Location(5,4),Location(2,3),2,5))
+        >>> rider2 = RiderRequest(2, Rider("bal",Location(5,4),Location(2,3),2,5))
+        >>> rider3 = RiderRequest(5, Rider("cal",Location(5,4),Location(2,3),2,5))
         >>> events.add(rider1)
         >>> events.add(rider2)
         >>> events.add(rider3)
-        >>> events.sort
+        >>> for x in events._items: print(x)
+        2 -- unique_identifier: bal , origin: (5,4), destination: (2,3), patience: 2, status: waiting, timestamp: 5: Request a driver
+        5 -- unique_identifier: cal , origin: (5,4), destination: (2,3), patience: 2, status: waiting, timestamp: 5: Request a driver
+        7 -- unique_identifier: kal , origin: (5,4), destination: (2,3), patience: 2, status: waiting, timestamp: 5: Request a driver
 
         """
         super().__init__(timestamp)
@@ -222,6 +228,14 @@ class RiderRequest(Event):
         @type dispatcher: Dispatcher
         @type monitor: Monitor
         @rtype: list[Event]
+
+        >>> events = PriorityQueue()
+        >>> rider1 = RiderRequest(7, Rider("kal",Location(5,4),Location(2,3),2,5))
+        >>> rider2 = RiderRequest(2, Rider("bal",Location(5,4),Location(2,3),2,5))
+        >>> rider3 = RiderRequest(5, Rider("cal",Location(5,4),Location(2,3),2,5))
+        >>> events.add(rider1)
+        >>> events.add(rider2)
+        >>> events.add(rider3)
         """
         monitor.notify(self.timestamp, RIDER, REQUEST,
                        self.rider.id, self.rider.origin)
@@ -271,6 +285,32 @@ class DriverRequest(Event):
         @type dispatcher: Dispatcher
         @type monitor: Monitor
         @rtype: list[Event]
+
+        >>> dis = Dispatcher()
+        >>> mon = Monitor()
+        >>> fire = Driver("fire", Location(5,5), 5)
+        >>> inferno = Driver("inferno", Location(5,20), 5)
+        >>> kal = Rider("kal", Location(5,2), Location(3,2), 5, 3)
+        >>> print(kal)
+        unique_identifier: kal , origin: (5,2), destination: (3,2), patience: 5, status: waiting, timestamp: 3
+        >>> print(dis.request_driver(kal))
+        None
+        >>> print(dis.waiting_list[0])
+        unique_identifier: kal , origin: (5,2), destination: (3,2), patience: 5, status: waiting, timestamp: 3
+        >>> dis2 = Dispatcher()
+        >>> driverrequest1 = DriverRequest(3, fire)
+        >>> print(driverrequest1.do(dis2,mon))
+        []
+        >>> print(dis2.request_rider(fire))
+        None
+        >>> PickupEvent = driverrequest1.do(dis,mon)
+        >>> print(PickupEvent[0])
+        TimeStamp:3.6 -- Rider:unique_identifier: kal , origin: (5,2), destination: (3,2), patience: 5, status: waiting, timestamp: 3 -- Driveridentifier:fire, location:(5,5), speed:5 idle status:False destination:(5,2): Pickup Event
+
+
+
+
+
         """
         # Notify the monitor about the request.
         monitor.notify(self.timestamp, DRIVER, REQUEST,
@@ -285,7 +325,7 @@ class DriverRequest(Event):
         if rider is not None:
             travel_time = self.driver.start_drive(rider.origin)
             #REMEMBER TO CHECK THE OREDER OF THE PICKUP CALL AND WHETHER IT AFFECTS ANYTHING
-            events.append(Pickup(self.timestamp + travel_time, self.driver, rider))
+            events.append(Pickup(self.timestamp + travel_time,self.driver,rider))
         return events
 
     def __str__(self):
@@ -404,7 +444,7 @@ class Pickup(Event):
         @rtype: String
         """
 
-        return "{} -- {} -- {}: Pickup Event".format(self.timestamp, self.rider,
+        return "TimeStamp:{} -- Rider:{} -- Driver{}: Pickup Event".format(self.timestamp, self.rider,
                                                      self.driver)
 
 

@@ -156,11 +156,42 @@ class PriorityQueue(Container):
         >>> pq.add("green")
         >>> pq._items
         ['blue', 'green', 'red', 'yellow']
+
         """
         # TODO
         # fix this method so that it orders the events based on priority
-        self._items.append(item)
-        self._items.sort()
+        if (self.is_empty()):
+            self._items.append(item)
+        else:
+            # self._items.append(item)
+            #  for x in self._items:
+            #     if x > item:
+            #         if(self._items.index(x) == len(self._items)-1):
+            #             self._items.append(item)
+            #         else:
+            #             continue
+            #     else:
+            #         self._items.insert(self._items.index(x)-1,item)
+            self._items.reverse()
+            for x in self._items:
+                if x > item:
+                   # print(x,">",item)
+                    if (self._items.index(x) == len(self._items) - 1):
+                        self._items.append(item)
+                        break
+                    else:
+                        continue
+                else:
+                    self._items.insert(self._items.index(x), item)
+                    break
+                    #print(x, "<", item)
+            self._items.reverse()
+
+
+
+
+
+
 
 
 

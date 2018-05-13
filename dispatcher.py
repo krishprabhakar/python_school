@@ -113,7 +113,7 @@ class Dispatcher:
         # check if the driver is in the driver_dict
         if driver not in self.driver_list:
             self.driver_list.append(driver)
-            return self.waiting_list[0]
+
 
         if len(self.waiting_list) == 0:
             return None
@@ -121,9 +121,11 @@ class Dispatcher:
             # this line will work but just to be safe im adding the loop
             # return self.waiting_list[0]
             rider = self.waiting_list[0]
-            for riders in self.waiting_list:
-                if rider.timestamp < riders:
-                    rider = riders
+            #this code returns the closest rider to the driver, but the assignment asks for the longest waiting
+            #i.e the highest priority in the waiting list so I'll comment this bit out
+            # for riders in self.waiting_list:
+            #     if rider.timestamp < riders:
+            #         rider = riders
             return rider
 
     def cancel_ride(self, rider):
